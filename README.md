@@ -59,5 +59,5 @@ code --install-extension /path/on/server/ubunmoni-<version>.vsix --force
 
 ## 说明
 
-- **内部使用**，不发布到 VS Code Marketplace。
+- **个人使用**，未发布到 VS Code Marketplace。
 - GPU 数据依赖 `nvidia-smi`。
