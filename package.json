@@ -63,7 +63,8 @@
 				{
 					"id": "ubunmoni.monitor",
 					"name": "System Monitor",
-					"type": "webview"
+					"type": "webview",
+					"icon": "assets/icon.png"
 				}
 			]
 		},

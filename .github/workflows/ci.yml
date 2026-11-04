@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # The lockfile resolves to registry.npmmirror.com; force GitHub's runner
+      # to use the public npm registry instead.
+      - name: Install dependencies
+        run: npm ci --registry=https://registry.npmjs.org --replace-registry-host=always
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run package
+
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce@3.9.2 package --no-dependencies --allow-missing-repository
+
+      - name: Check VSIX contents
+        run: |
+          unzip -l ubunmoni-*.vsix
+          unzip -l ubunmoni-*.vsix | grep -q 'extension/NOTICE'
+          unzip -l ubunmoni-*.vsix | grep -q 'extension/LICENSE.txt'
+          unzip -l ubunmoni-*.vsix | grep -q 'extension/dist/extension.js'
+
+      - name: Upload VSIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubunmoni-vsix-${{ github.sha }}
+          path: ubunmoni-*.vsix
+          if-no-files-found: error
+          retention-days: 14
