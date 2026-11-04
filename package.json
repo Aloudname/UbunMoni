@@ -16,7 +16,7 @@
 		"linux"
 	],
 	"icon": "assets/icon.png",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"engines": {
 		"vscode": "^1.101.2"
 	},
@@ -52,16 +52,16 @@
 		"viewsContainers": {
 			"panel": [
 				{
-					"id": "ubunmoni.panel",
+					"id": "ubunmoni-monitor",
 					"title": "System Monitor",
 					"icon": "assets/panel-icon.svg"
 				}
 			]
 		},
 		"views": {
-			"ubunmoni.panel": [
+			"ubunmoni-monitor": [
 				{
-					"id": "ubunmoni.view",
+					"id": "ubunmoni.monitor",
 					"name": "System Monitor",
 					"type": "webview"
 				}

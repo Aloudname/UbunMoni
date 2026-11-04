@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 export const CONFIG_SECTION = "ubunmoni";
-export const VIEW_ID = "ubunmoni.view";
+export const VIEW_ID = "ubunmoni.monitor";
 export const COMMAND_OPEN = "ubunmoni.open";
 
 const DEFAULT_INTERVAL = 1000;
