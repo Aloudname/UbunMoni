@@ -2,7 +2,7 @@
 
 <h1>UbunMoni</h1>
 
-![modifier](https://img.shields.io/badge/authors-Aloudname-162b3e?style=flat-square)
+![modifier](https://img.shields.io/badge/modifier-Aloudname-162b3e?style=flat-square)
 ![status](https://img.shields.io/badge/status-Beta-eebb00?style=flat-square)
 ![license](https://img.shields.io/badge/license-Apache--2.0-bbcc33?style=flat-square)
 ![TypesSript](https://img.shields.io/badge/ts-5.8.3-blue?logo=typescript&logoColor=white)
