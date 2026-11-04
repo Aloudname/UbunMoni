@@ -3,12 +3,14 @@
 out/**
 node_modules/**
 src/**
+package-lock.json
+style.md
+*.vsix
 .gitignore
+.gitattributes
 .yarnrc
 webpack.config.js
-vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map
 **/*.ts
-docs

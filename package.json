@@ -1,66 +1,45 @@
 {
-	"name": "monitor-ultra",
-	"displayName": "Monitor Ultra",
-	"description": "Advanced system monitoring with GPU support for Ubuntu - Enhanced version of Monitor Ultra.",
-	"publisher": "your-publisher-name",
+	"name": "ubunmoni",
+	"displayName": "UbunMoni",
+	"description": "Horizontal bottom-panel system monitor for Ubuntu servers: CPU, memory, storage I/O, disks and NVIDIA GPUs.",
+	"publisher": "aloudname",
+	"license": "Apache-2.0",
 	"keywords": [
-		"performance",
-		"resource",
-		"resources",
 		"monitor",
-		"memory",
+		"system",
 		"cpu",
+		"memory",
+		"disk",
 		"gpu",
 		"nvidia",
 		"ubuntu",
-		"linux",
-		"io",
-		"network",
-		"disk",
-		"storage",
-		"system-monitor"
+		"linux"
 	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/your-username/vscode-monitor-ultra"
-	},
 	"icon": "assets/icon.png",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.101.2"
 	},
+	"extensionKind": [
+		"workspace"
+	],
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onStartupFinished"
-	],
 	"main": "./dist/extension.js",
 	"scripts": {
-		"vscode:prepublish": "run-s package",
+		"vscode:prepublish": "webpack --mode production --devtool hidden-source-map",
 		"compile": "webpack",
 		"watch": "webpack --watch",
-		"package": "run-s build:i18n && webpack --mode production --devtool hidden-source-map",
-		"compile-tests": "tsc -p . --outDir out",
-		"watch-tests": "tsc -p . -w --outDir out",
-		"pretest": "run-s compile-tests && run-s compile && run-s lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js",
-		"build:i18n": "node scripts/build-i18n.js"
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"lint": "eslint src --ext ts"
 	},
 	"devDependencies": {
-		"@types/mocha": "10.0.10",
 		"@types/node": "18.19.115",
 		"@types/vscode": "1.101.0",
 		"@typescript-eslint/eslint-plugin": "6.21.0",
 		"@typescript-eslint/parser": "6.21.0",
-		"@vscode/test-electron": "2.5.2",
 		"eslint": "8.57.1",
-		"glob": "10.4.5",
-		"mocha": "10.8.2",
-		"npm-run-all2": "5.0.2",
-		"sharp": "^0.34.2",
-		"svg2img": "^1.0.0-beta.2",
 		"ts-loader": "9.5.2",
 		"typescript": "5.8.3",
 		"webpack": "5.99.9",
@@ -70,78 +49,40 @@
 		"systeminformation": "5.27.7"
 	},
 	"contributes": {
+		"viewsContainers": {
+			"panel": [
+				{
+					"id": "ubunmoni.panel",
+					"title": "System Monitor",
+					"icon": "assets/panel-icon.svg"
+				}
+			]
+		},
+		"views": {
+			"ubunmoni.panel": [
+				{
+					"id": "ubunmoni.view",
+					"name": "System Monitor",
+					"type": "webview"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "ubunmoni.open",
+				"title": "Open Panel",
+				"category": "System Monitor"
+			}
+		],
 		"configuration": {
-			"title": "Monitor Ultra",
+			"title": "UbunMoni",
 			"properties": {
-				"monitor-ultra.metrics": {
-					"type": "array",
-					"items": {
-						"type": "string",
-						"enum": [
-							"cpu",
-							"memoryActive",
-							"memoryUsed",
-							"network",
-							"fileSystem",
-							"battery",
-							"cpuTemp",
-							"cpuSpeed",
-							"osDistro",
-							"diskSpace",
-							"uptime",
-							"gpuUtilization",
-							"gpuMemory",
-							"gpuTemperature"
-						]
-					},
-					"default": [
-						"cpu",
-						"memoryActive",
-						"memoryUsed",
-						"network",
-						"fileSystem",
-						"battery",
-						"cpuTemp",
-						"cpuSpeed",
-						"osDistro",
-						"diskSpace",
-						"uptime",
-						"gpuUtilization",
-						"gpuMemory",
-						"gpuTemperature"
-					],
-					"description": "%config.metrics%"
-				},
-				"monitor-ultra.refresh-interval": {
+				"ubunmoni.refreshInterval": {
 					"type": "number",
-					"default": 3000,
-					"description": "%config.refresh-interval%"
-				},
-				"monitor-ultra.diskSpace": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"default": [
-						"all",
-						"C:"
-					],
-					"description": "%config.diskSpace%"
-				},
-				"monitor-ultra.gpuIndex": {
-					"type": "number",
-					"default": 0,
-					"description": "%config.gpuIndex%"
-				},
-				"monitor-ultra.gpuEnabled": {
-					"type": "boolean",
-					"default": true,
-					"description": "%config.gpuEnabled%"
-				},
-				"monitor-ultra.gpuAutoDetect": {
-					"type": "boolean",
-					"default": true,
-					"description": "%config.gpuAutoDetect%"
+					"default": 1000,
+					"minimum": 250,
+					"maximum": 60000,
+					"description": "Panel refresh interval in milliseconds."
 				}
 			}
 		}

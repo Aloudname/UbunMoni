@@ -1,87 +1,60 @@
-[github-sh# Monitor Ultra
+<div align="center">
 
-[English](./README.md) | [简体中文](./README_ZH.md)
+<h1>UbunMoni</h1>
 
-Monitor Ultra is an advanced system monitoring extension for Visual Studio Code, enhanced with GPU monitoring capabilities specifically optimized for Ubuntu Linux systems. This project is based on the original Monitor Pro but includes significant improvements and new features.
+![authors](https://img.shields.io/badge/authors-Aloudname-162b3e?style=flat-square)
+![status](https://img.shields.io/badge/status-Beta-eebb00?style=flat-square)
+![license](https://img.shields.io/badge/license-Apache--2.0-bbcc33?style=flat-square)
+![TypesSript](https://img.shields.io/badge/ts-5.8.3-blue?logo=typescript&logoColor=white)
 
-## 🚀 What's New in Monitor Ultra
+</div>
 
-### Enhanced GPU Monitoring
-- **Ubuntu Optimization**: Special optimizations for Ubuntu Linux systems
-- **NVIDIA GPU Support**: Complete monitoring of GPU utilization, memory, and temperature
-- **Smart Error Handling**: Intelligent error detection and graceful fallbacks
-- **Performance Caching**: Reduced system calls with intelligent caching mechanisms
+---
 
-### Improved User Experience
-- **Auto-Detection**: Automatically detect and configure GPU monitoring
-- **Flexible Configuration**: Granular control over monitoring features
-- **Multi-Language Support**: Enhanced localization for Chinese, Japanese, and English
-- **Comprehensive Documentation**: Detailed setup guides for Ubuntu users//img.shields.io/github/stars/nexmoe/vscode-monitor-pro?style=social
-[github-url]: https://github.com/nexmoe/vscode-monitor-ultra
-[vscode-shield]: https://img.shields.io/visual-studio-marketplace/r/nexmoe.monitor-ultra?logo=visual-studio-code&style=social
-[vscode-url]: https://marketplace.visualstudio.com/items?itemName=nexmoe.monitor-ultra
+自用的 Ubuntu 资源监控扩展，改自 [Monitor Ultra](https://github.com/flycalm/vscode-monitor-ultra.git)。
 
-[![Github Repo][github-shield]][github-url]
-[![VSCode Plugin][vscode-shield]][vscode-url]
-![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/nexmoe.monitor-ultra?logo=visual-studio-code&style=social)
-![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/nexmoe.monitor-ultra?logo=visual-studio-code&style=social)
+## 指标
 
-# Monitor Ultra
+- **CPU**：线程数、瞬时使用率
+- **内存**：占用条
+- **存储**：文件吞吐、磁盘占用
+- **GPU**：占用率、显存、温度。需要 `nvidia-smi`
 
-English | [简体中文](./README_ZH.md)
+不支持的指标显示 `N/A`。
 
-Monitor Ultra is a comprehensive resource monitoring tool designed to help you track important system metrics in real-time and provide intuitive visualizations. Regardless of your profession, if you use VS Code, don't miss out on it.
+## 构建与打包
 
-## Screenshots
+```bash
+npm install
+npm run lint
+npm run package   # webpack production build -> dist/extension.js
+```
 
-![screenshot0](assets/screenshot0.png)
+打包 VSIX（最新 `@vscode/vsce` 需 Node 20+），得到 `ubunmoni-1.1.0.vsix`：
 
-## Features
+```bash
+npx @vscode/vsce package --no-dependencies --allow-missing-repository
+```
 
-- [ ] **Resources Monitor**
-  - [x] **CPU Usage**: Monitor the percentage of CPU utilization to understand how much processing power is being utilized by your system.
-  - [x] **CPU Frequency**: Keep track of the current CPU frequency to understand how your system is dynamically adjusting its processing power.
-  - [x] **CPU Temperature**: Monitor the temperature if it can.
-  - [x] **Memory Usage**: Keep an eye on the memory consumption of your computer.
-  - [x] **Network Usage**: Track the network activity on your machine, including incoming and outgoing data transfer rates.
-  - [x] **File-system Usage** (Linux, macOS): Provides the read/write rate of the disk
-  - [x] **Battery Percentage and Charging Status**: If you're using a laptop or a portable device, this feature allows you to monitor the battery level and charging status.
-  - [x] **OS Distro**
-  - [x] **Disk Usage**
-  - [x] **Uptime**
-- [x] **Order**: Customize the order in which the monitored resources are displayed to you, making it convenient to monitor them at a glance.
-- [x] **Refresh Interval**: Set the refresh interval for updating the resource metrics.
-- [x] **No Layout Shift**: Ensures that the position and size of elements in the StatusBar do not unexpectedly change.
-- [x] **Remote SSH Resources Monitor**: You can keep track of important system metrics on a remote SSH-connected device.
-- [ ] **High Occupancy Alert**: Receive alerts when any of the monitored resources reach a high occupancy level.
-- [ ] **Dashboard**: I want to display information all you care about in a page with abundant charts.
-- [x] **Multiple Languages**: English、简体中文、繁體中文、日本語
+如果只需要重新编译扩展代码，`npm run package` 即可。
 
-## Vision
+## 安装
 
-I am well aware of the importance of monitoring information, so my goal is to create the most comprehensive and intuitive monitoring tool that allows you to easily grasp the system's status. The development of Monitor Ultra is driven by the aim to meet everyone's various system monitoring needs.
+得到 `ubunmoni-1.1.0.vsix` 后，需在 **Remote SSH 终端**中执行：
 
-Furthermore, in the future, I also intend to integrate chart designs to make the data even more intuitive and easy to understand. Through these charts, you will be able to clearly visualize the changing trends and interrelationships of system metrics. This way, you can effortlessly comprehend the system's performance and make informed decisions based on these indicators.
+```bash
+code --install-extension </path/to/ubunmoni-1.1.0.vsix> --force
+```
 
-## Develop
+也可以在扩展视图右上角 `...` -> `Install from VSIX...` 中选择文件。
 
-[Document](./CONTRIBUTING.md)
+## 使用
 
-## Inspired by
-- <https://github.com/nexmoe/vscode-monitor-pro>(Modified from this project)
-- <https://github.com/chneau/vscode-resource-monitor>
-- <https://github.com/Njanderson/resmon>
-  
-## Why develop this plugin?
+- 打开 VS Code 底部面板中的 `System Monitor` 标签。
+- 或运行命令面板中的 `System Monitor: Open Panel`。
+- 设置项 `ubunmoni.refreshInterval`：刷新间隔（ms）。
 
-To provide a comprehensive resource monitoring tool for better management and monitoring of server status while using VS Code's Remote SSH.
+## 说明
 
-## Issue
-
-I highly value user feedback and opinions, as they are crucial for me to improve and enhance the product. If you have any suggestions or encounter any bugs, please feel free to provide feedback:
-
-<https://github.com/nexmoe/vscode-monitor-ultra/issues>
-
-## Support Me
-
-Please give a star on [Github](https://github.com/nexmoe/vscode-monitor-ultra)
+- **仅自用**。
+- GPU 数据依赖 `nvidia-smi`；无 NVIDIA GPU 或不可用时显示 `N/A`。

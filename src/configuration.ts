@@ -1,22 +1,23 @@
-import { workspace } from "vscode";
-import { MetricsExist } from "./constants";
-export const getRefreshInterval = () =>
-	workspace.getConfiguration().get<number>("monitor-ultra.refresh-interval") ??
-	1000;
+import * as vscode from "vscode";
 
-export const getMetrics = workspace
-	.getConfiguration()
-	.get("monitor-ultra.metrics") as MetricsExist[];
-export const getDiskSpaceConfig = () =>
-	workspace.getConfiguration().get<string[]>("monitor-ultra.diskSpace") ?? ["/"];
+export const CONFIG_SECTION = "ubunmoni";
+export const VIEW_ID = "ubunmoni.view";
+export const COMMAND_OPEN = "ubunmoni.open";
 
-export const getGpuConfig = () =>
-	workspace.getConfiguration().get<number>("monitor-ultra.gpuIndex") ?? 0;
+const DEFAULT_INTERVAL = 1000;
+const MIN_INTERVAL = 250;
+const MAX_INTERVAL = 60_000;
 
-export const getGpuEnabledConfig = () =>
-	workspace.getConfiguration().get<boolean>("monitor-ultra.gpuEnabled") ?? true;
+export const getRefreshInterval = (): number => {
+	const configured = vscode.workspace
+		.getConfiguration(CONFIG_SECTION)
+		.get<number>("refreshInterval", DEFAULT_INTERVAL);
 
-export const getGpuAutoDetectConfig = () =>
-	workspace.getConfiguration().get<boolean>("monitor-ultra.gpuAutoDetect") ?? true;
-
-export { MetricsExist };
+	if (typeof configured !== "number" || !Number.isFinite(configured)) {
+		return DEFAULT_INTERVAL;
+	}
+	return Math.min(
+		MAX_INTERVAL,
+		Math.max(MIN_INTERVAL, Math.round(configured))
+	);
+};
