@@ -23,6 +23,9 @@
 	const el = {
 		interval: byId("interval"),
 		settings: byId("settings"),
+		cpuCard: byId("cpu-card"),
+		memoryCard: byId("memory-card"),
+		storageCard: byId("storage-card"),
 		cpuUsage: byId("cpu-usage"),
 		cpuThreads: byId("cpu-threads"),
 		cpuLine: byId("cpu-line"),
@@ -41,6 +44,17 @@
 	};
 
 	const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+	/**
+	 * Native tooltips flicker when their title changes while visible. Only write
+	 * static hardware information here, and only when the value actually changes.
+	 */
+	const setStaticTitle = (element, text) => {
+		const next = text || "";
+		if (element && element.title !== next) {
+			element.title = next;
+		}
+	};
 
 	const finiteOrNull = (value) =>
 		typeof value === "number" && Number.isFinite(value) ? value : null;
@@ -178,8 +192,13 @@
 			state.cpu.shift();
 		}
 		el.cpuUsage.textContent = formatPercent(usage);
-		el.cpuThreads.textContent = `${cpu.threads ?? 0} threads`;
-		el.cpuThreads.title = cpu.model ?? "";
+		const threads = cpu.threads ?? 0;
+		const model = typeof cpu.model === "string" ? cpu.model.trim() : "";
+		el.cpuThreads.textContent = `${threads} threads`;
+		setStaticTitle(
+			el.cpuCard,
+			model ? `${model} · ${threads} threads` : `${threads} threads`
+		);
 		const paths = buildSpark(state.cpu, 100);
 		el.cpuLine.setAttribute("d", paths.line);
 		el.cpuArea.setAttribute("d", paths.area);
@@ -190,6 +209,10 @@
 		const active = finiteOrNull(memory.active);
 		const total = finiteOrNull(memory.total);
 		el.memPair.textContent = formatPair(used, total);
+		setStaticTitle(
+			el.memoryCard,
+			total === null ? "" : `${formatBytes(total)} total memory`
+		);
 		el.memActive.textContent = active === null ? "N/A" : formatBytes(active);
 		const usedPercent = used !== null && total ? clamp((used / total) * 100, 0, 100) : 0;
 		const activePercent = active !== null && total ? clamp((active / total) * 100, 0, 100) : 0;
@@ -277,6 +300,12 @@
 
 	const renderDisks = (disks) => {
 		ensureDiskRows(disks);
+		setStaticTitle(
+			el.storageCard,
+			disks.length === 0
+				? "No disk data"
+				: `${disks.length} volume${disks.length === 1 ? "" : "s"}`
+		);
 		disks.forEach((disk, index) => {
 			const row = state.diskRows[index];
 			if (!row) {
@@ -284,14 +313,18 @@
 			}
 			const percent = clamp(Number.isFinite(disk.percent) ? disk.percent : 0, 0, 100);
 			const pair = formatPair(disk.used, disk.size);
+			const size =
+				Number.isFinite(disk.size) && disk.size > 0
+					? ` · ${formatBytes(disk.size)} total`
+					: "";
 			row.mount.textContent = disk.mount;
-			row.mount.title = disk.mount;
+			setStaticTitle(row.mount, disk.mount);
+			setStaticTitle(row.root, `${disk.mount}${size}`);
 			row.pair.textContent = pair;
 			row.pct.textContent = formatPercent(percent);
 			row.fill.style.width = `${percent}%`;
 			row.root.classList.toggle("warn", percent >= 85 && percent < 95);
 			row.root.classList.toggle("crit", percent >= 95);
-			row.root.title = `${disk.mount} · ${pair} · ${formatPercent(percent)} used`;
 		});
 	};
 
@@ -371,7 +404,7 @@
 			tile.temp.textContent = tempText;
 			tile.temp.classList.toggle("warn", temp !== null && temp >= 80 && temp < 90);
 			tile.temp.classList.toggle("crit", temp !== null && temp >= 90);
-			tile.root.title = `${gpu.name || `GPU ${gpu.index}`} · VRAM ${formatPair(memUsed, memTotal)} · util ${formatPercent(util)} · ${tempText}`;
+			setStaticTitle(tile.root, gpu.name || `GPU ${gpu.index}`);
 		});
 	};
 

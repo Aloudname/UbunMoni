@@ -157,7 +157,7 @@ export class MonitorPanelProvider implements vscode.WebviewViewProvider {
 	</header>
 
 	<main class="grid">
-		<section class="card cpu-card" aria-label="CPU">
+		<section id="cpu-card" class="card cpu-card" aria-label="CPU">
 			<div class="card-head">
 				<span class="label">CPU</span>
 				<span id="cpu-threads" class="aux">—</span>
@@ -171,7 +171,7 @@ export class MonitorPanelProvider implements vscode.WebviewViewProvider {
 			</div>
 		</section>
 
-		<section class="card memory-card" aria-label="Memory">
+		<section id="memory-card" class="card memory-card" aria-label="Memory">
 			<div class="card-head">
 				<span class="label">MEMORY</span>
 			</div>
@@ -186,7 +186,7 @@ export class MonitorPanelProvider implements vscode.WebviewViewProvider {
 			</div>
 		</section>
 
-		<section class="card storage-card" aria-label="Storage and IO">
+		<section id="storage-card" class="card storage-card" aria-label="Storage and IO">
 			<div class="card-head">
 				<span class="label">STORAGE &amp; I/O</span>
 			</div>

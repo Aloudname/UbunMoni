@@ -161,7 +161,7 @@ body {
 }
 
 .card:hover {
-	background: var(--hover);
+	background: color-mix(in srgb, var(--border) 45%, var(--card));
 }
 
 .card-head {
