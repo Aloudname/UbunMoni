@@ -52,7 +52,15 @@ npm run lint
 npm run package   # webpack production build -> dist/extension.js
 ```
 
-打包 VSIX（固定使用 `@vscode/vsce@3.9.2`，需要 Node 20+），得到 `ubunmoni-<version>.vsix`：
+打包 VSIX（固定使用 `@vscode/vsce@3.9.2`，需要 **Node 20+**。项目已提供 `.nvmrc`，若默认 Node 不是 20，先切换：
+
+```bash
+nvm install 20
+nvm use
+node --version   # >>> v20.x
+```
+
+然后打包，得到 `ubunmoni-<version>.vsix`：
 
 ```bash
 npx @vscode/vsce@3.9.2 package --no-dependencies --allow-missing-repository

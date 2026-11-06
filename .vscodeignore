@@ -9,6 +9,7 @@ style.md
 *.vsix
 .gitignore
 .gitattributes
+.nvmrc
 .yarnrc
 webpack.config.js
 **/tsconfig.json
