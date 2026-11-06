@@ -52,7 +52,7 @@ npm run lint
 npm run package   # webpack production build -> dist/extension.js
 ```
 
-打包 VSIX（固定使用 `@vscode/vsce@3.9.2`，需要 **Node 20+**。项目已提供 `.nvmrc`，若默认 Node 不是 20，先切换：
+打包 VSIX（固定使用 `@vscode/vsce@3.9.2`），需要 **Node 20+**。项目已提供 `.nvmrc`，若默认 Node 不是 20，先切换：
 
 ```bash
 nvm install 20
